@@ -6,8 +6,9 @@ IFLAG = -I$(INC)
 BIN = ./bin
 OBJ = ./obj
 SRC = ./src
+CVFLAGS = -v --tool=memcheck --leak-check=full --show-reachable=yes --log-file=valclient
 
-all: app
+all: app valgrind
 
 app: $(OBJ)/sysPrg.o
 	$(CC) $(LFLAGS) $(BIN)/sysPrg $(OBJ)/sysPrg.o
@@ -25,3 +26,7 @@ clean:
 	rm -f $(OBJ)/*.o
 	rm -f $(BIN)/sysPrg
 	@echo "Done!"
+	
+valgrind:
+	valgrind --leak-check=full $(BIN)/app
+	mv valgrind $(BIN)
